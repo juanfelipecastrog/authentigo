@@ -12,6 +12,8 @@ The program accepts the following command-line argument:
 -privateKeyPath: Specifies the file path for the private key. If not provided, a default private key path will be used
 ```
 
+### Port: 8080
+
 ## Endpoints:
 ### IssueAccessToken:
 This endpoint issues a JWT access token in response to a request to grant client credentials with basic authentication.
@@ -27,6 +29,12 @@ this program only uses local("hardcoded") users you can use any of the following
 -  "user":  "password",
 -  "user2": "password2",
 -  "user3": "password3",
+
+Example using Curl
+```sh
+curl -X GET http://localhost:8080/api/token \
+     -u "user:password"
+```
 
 
 #### Response
@@ -50,7 +58,14 @@ This endpoint verifies and displays information about a JWT access token.
 
 #### Request
 The request to this endpoint should include the access token in the token form parameter.
-- The key should be **token** 
+- The key should be **token**
+  
+Example using Curl
+
+```sh
+curl -X GET http://localhost:8080/api/token/validator \
+     -F "token=<access_token>"
+```
 
 #### Response
 
@@ -73,6 +88,12 @@ This endpoint returns the list of signing keys(Public keys that have been used t
 
 #### Request
 No request parameters are required for this endpoint.
+
+Example using Curl
+
+```sh
+curl -X GET http://localhost:8080/api/keys
+```
 
 #### Response
 
