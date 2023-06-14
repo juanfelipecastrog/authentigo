@@ -1,5 +1,5 @@
 package internal
 
-const (
+var (
 	PrivateKeyPath = "jwtRS256.key"
 )

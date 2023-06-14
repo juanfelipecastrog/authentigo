@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentigo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentigo
+  template:
+    metadata:
+      labels:
+        app: authentigo
+    spec:
+      containers:
+        - name: authentigo
+          image: authentigo
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
