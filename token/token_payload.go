@@ -1,13 +1,19 @@
 package token
 
 import (
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 	"time"
 )
 
-type Payload struct {
-	ID        uuid.UUID `json:"id"`
-	User      int64     `json:"user"`
-	IssuedAt  time.Time `json:"issuedAt"`
-	ExpiredAt time.Time `json:"expiredAt"`
+func GeneratePayload(clientID string, duration time.Duration) jwt.Claims {
+	now := time.Now()
+	expiration := now.Add(duration)
+
+	return jwt.MapClaims{
+		"id":        uuid.New().String(),
+		"user":      clientID,
+		"issuedAt":  now.Unix(),
+		"expiredAt": expiration,
+	}
 }

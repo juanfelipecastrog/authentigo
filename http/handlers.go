@@ -3,7 +3,9 @@ package http
 import (
 	"Authentigo/auth"
 	"Authentigo/local"
+	"Authentigo/token"
 	"net/http"
+	"time"
 )
 
 // IssueAccessToken issues a JWT access token in response to a request to grant client credentials with basic authentication.
@@ -19,6 +21,12 @@ func IssueAccessToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("OK!"))
+	signedToken, err := token.Create(clientID, time.Duration(24)*time.Hour)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte(signedToken))
 }
