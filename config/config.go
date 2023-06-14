@@ -11,7 +11,7 @@ import (
 var (
 	PrivateKey *rsa.PrivateKey
 	PublicKey  *rsa.PublicKey
-	publicKeys []*rsa.PublicKey
+	PublicKeys []*rsa.PublicKey
 )
 
 func ReadPrivateKey(privateKeyPath string) (*rsa.PrivateKey, error) {

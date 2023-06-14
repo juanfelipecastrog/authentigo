@@ -15,5 +15,6 @@ func defineRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc(CreateTokenEndpoint, IssueAccessToken)
 	mux.HandleFunc(TokenValidationEndpoint, IntrospectToken)
+	mux.HandleFunc(GetKeysEndpoint, ListSigningKeys)
 	return mux
 }

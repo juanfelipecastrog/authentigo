@@ -5,6 +5,7 @@ import (
 	"Authentigo/config"
 	"Authentigo/local"
 	"Authentigo/token"
+	"encoding/base64"
 	"encoding/json"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
@@ -29,6 +30,8 @@ func IssueAccessToken(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+
+	config.PublicKeys = append(config.PublicKeys, &config.PrivateKey.PublicKey)
 
 	w.Header().Set("Content-Type", "text/plain")
 	w.WriteHeader(http.StatusOK)
@@ -75,6 +78,33 @@ func IntrospectToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseJSON, err := json.Marshal(claims)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJSON)
+}
+
+// ListSigningKeys returns the list of signing keys in JWK format
+func ListSigningKeys(w http.ResponseWriter, r *http.Request) {
+	var jwksKeys []interface{}
+	for _, pk := range config.PublicKeys {
+		jwk := map[string]interface{}{
+			"kty": "RSA",
+			"use": "sig",
+			"alg": "RS256",
+			"n":   base64.RawURLEncoding.EncodeToString(pk.N.Bytes()),
+		}
+		jwksKeys = append(jwksKeys, jwk)
+	}
+
+	jwks := map[string]interface{}{
+		"keys": jwksKeys,
+	}
+
+	responseJSON, err := json.Marshal(jwks)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
