@@ -14,5 +14,6 @@ func StartServer() {
 func defineRouter() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc(CreateTokenEndpoint, IssueAccessToken)
+	mux.HandleFunc(TokenValidationEndpoint, IntrospectToken)
 	return mux
 }

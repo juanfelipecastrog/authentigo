@@ -6,14 +6,11 @@ import (
 	"time"
 )
 
-func GeneratePayload(clientID string, duration time.Duration) jwt.Claims {
-	now := time.Now()
-	expiration := now.Add(duration)
-
+func GenerateClaims(clientID string, duration time.Duration) jwt.Claims {
 	return jwt.MapClaims{
-		"id":        uuid.New().String(),
-		"user":      clientID,
-		"issuedAt":  now.Unix(),
-		"expiredAt": expiration,
+		"id":       uuid.New(),
+		"user":     clientID,
+		"issuedAt": time.Now(),
+		"exp":      time.Now().Add(duration).Unix(),
 	}
 }

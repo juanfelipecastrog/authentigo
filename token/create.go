@@ -9,12 +9,13 @@ import (
 )
 
 func Create(clientID string, duration time.Duration) (string, error) {
-	payload := GeneratePayload(clientID, duration)
+	payload := GenerateClaims(clientID, duration)
 
 	privateKey, err := config.ReadPrivateKey(internal.PrivateKeyPath)
 	if err != nil {
 		return "", err
 	}
+	config.PrivateKey = privateKey
 
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodRS256, payload)
 	tokenString, err := jwtToken.SignedString(privateKey)

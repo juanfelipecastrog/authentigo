@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	privateKey *rsa.PrivateKey
-	publicKey  *rsa.PublicKey
+	PrivateKey *rsa.PrivateKey
+	PublicKey  *rsa.PublicKey
 	publicKeys []*rsa.PublicKey
 )
 
