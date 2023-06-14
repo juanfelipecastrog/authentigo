@@ -8,7 +8,7 @@ import (
 func StartServer() {
 	router := defineRouter()
 	log.Println("authentigo is running...")
-	log.Fatal(http.ListenAndServe(":5000", router))
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
 func defineRouter() http.Handler {
